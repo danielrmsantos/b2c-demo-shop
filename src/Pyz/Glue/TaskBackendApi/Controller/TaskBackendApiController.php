@@ -149,9 +149,8 @@ class TaskBackendApiController extends AbstractController
      *              }
      *          ],
      *          "responses": {
-     *              "400": "Bad Request",
-     *              "403": "Unauthorized request",
-     *              "404": "Not Found"
+     *              "204": "No content",
+     *              "403": "Unauthorized request"
      *          }
      *     }
      * })
