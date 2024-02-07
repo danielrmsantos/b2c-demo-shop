@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="Task" strict="true">
+        <property name="idTask" type="int"/>
+        <property name="idAuthor" type="int"/>
+        <property name="idAssignedUser" type="int"/>
+        <property name="title" type="string"/>
+        <property name="description" type="string"/>
+        <property name="status" type="string"/>
+        <property name="dueDate" type="string"/>
+    </transfer>
+
+    <transfer name="TaskCollection" strict="true">
+        <property name="tasks" type="Task[]" singular="task"/>
+        <property name="pagination" type="Pagination"/>
+    </transfer>
+
+    <transfer name="TaskCriteria" strict="true">
+        <property name="taskConditions" type="TaskConditions"/>
+        <property name="sortCollection" type="Sort[]" singular="sort"/>
+        <property name="pagination" type="Pagination"/>
+    </transfer>
+
+    <transfer name="TaskCollectionDeleteCriteria" strict="true">
+        <property name="taskIds" type="int[]" singular="idTask"/>
+    </transfer>
+
+    <transfer name="TaskConditions" strict="true">
+        <property name="taskIds" type="int[]" singular="idTask"/>
+        <property name="dueDate" type="string"/>
+    </transfer>
+
+    <transfer name="TaskCollectionRequest" strict="true">
+        <property name="tasks" type="Task[]" singular="task"/>
+    </transfer>
+
+    <transfer name="TaskCollectionResponse" strict="true">
+        <property name="tasks" type="Task[]" singular="task"/>
+        <property name="isSuccessful" type="bool"/>
+        <property name="errors" type="Error[]" singular="error"/>
+    </transfer>
+
+    <transfer name="Error">
+    </transfer>
+
+    <transfer name="Sort">
+    </transfer>
+
+    <transfer name="Pagination">
+    </transfer>
+
+    <transfer name="Mail">
+        <property name="task" type="Task"/>
+        <property name="taskMailData" type="TaskMailData"/>
+    </transfer>
+
+    <transfer name="TaskMailData">
+        <property name="title" type="string"/>
+        <property name="head" type="string"/>
+        <property name="body" type="string"/>
+    </transfer>
+
+    <transfer name="User">
+    </transfer>
+
+    <transfer name="UserConditions" strict="true">
+    </transfer>
+
+    <transfer name="UserCriteria">
+    </transfer>
+</transfers>

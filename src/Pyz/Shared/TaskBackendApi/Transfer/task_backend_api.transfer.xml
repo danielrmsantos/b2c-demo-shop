@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="TaskBackendApiAttributes" strict="true">
+        <property name="title" type="string"/>
+        <property name="description" type="string"/>
+        <property name="status" type="string"/>
+        <property name="dueDate" type="string"/>
+        <property name="idAuthor" type="int"/>
+        <property name="idAssignedUser" type="int"/>
+    </transfer>
+
+    <transfer name="Task" strict="true">
+    </transfer>
+
+    <transfer name="TaskCollectionRequest" strict="true">
+    </transfer>
+
+    <transfer name="TaskCollectionResponse" strict="true">
+    </transfer>
+
+    <transfer name="TaskCollection" strict="true">
+    </transfer>
+
+    <transfer name="TaskCriteria" strict="true">
+    </transfer>
+
+    <transfer name="TaskConditions" strict="true">
+    </transfer>
+
+    <transfer name="TaskResourceCollection">
+        <property name="taskResources" type="GlueResource[]" singular="taskResource"/>
+    </transfer>
+
+    <transfer name="Error">
+    </transfer>
+
+    <transfer name="Pagination">
+    </transfer>
+
+    <transfer name="Sort">
+    </transfer>
+
+</transfers>

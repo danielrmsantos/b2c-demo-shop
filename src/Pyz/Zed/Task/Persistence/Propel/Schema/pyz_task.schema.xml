@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd" namespace="Orm\Zed\Task\Persistence" package="src.Orm.Zed.Task.Persistence">
+
+    <table name="pyz_task" identifierQuoting="true">
+        <column name="id_task" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_user" required="true" type="INTEGER" description="Task author"/>
+        <column name="fk_assigned_user" required="false" type="INTEGER" description="Task assigned user" defaultValue="NULL"/>
+        <column name="title" required="true" type="VARCHAR" size="255"/>
+        <column name="description" required="false" type="LONGVARCHAR"/>
+        <column name="due_date" required="true" type="DATE"/>
+        <column name="status" required="true" type="VARCHAR" size="36"/>
+
+        <behavior name="timestampable"/>
+
+        <foreign-key name="pyz_task-fk_user" foreignTable="spy_user" phpName="User" refPhpName="Task">
+            <reference local="fk_user" foreign="id_user"/>
+        </foreign-key>
+
+        <foreign-key name="pyz_task-fk_assigned_user" foreignTable="spy_user" phpName="AssignedUser" refPhpName="AssignedTask">
+            <reference local="fk_assigned_user" foreign="id_user"/>
+        </foreign-key>
+
+        <id-method-parameter value="pyz_task_pk_seq"/>
+    </table>
+
+</database>

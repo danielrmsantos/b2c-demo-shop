@@ -186,3 +186,10 @@ if (getenv('SPRYKER_CURRENT_REGION')) {
         $job['region'] = getenv('SPRYKER_CURRENT_REGION');
     }
 }
+
+$jobs[] = [
+    'name' => 'send-tasks-overdue-emails',
+    'command' => '$PHP_BIN vendor/bin/console tasks:send-overdue-emails',
+    'schedule' => '0 6 * * *',
+    'enable' => true,
+];

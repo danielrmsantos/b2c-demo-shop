@@ -7,6 +7,7 @@
 
 namespace Pyz\Zed\Mail;
 
+use Pyz\Zed\Task\Communication\Plugin\Mail\TaskOverdueMailTypeBuilderPlugin;
 use Spryker\Zed\AvailabilityNotification\Communication\Plugin\Mail\AvailabilityNotificationMailTypeBuilderPlugin;
 use Spryker\Zed\AvailabilityNotification\Communication\Plugin\Mail\AvailabilityNotificationSubscriptionMailTypeBuilderPlugin;
 use Spryker\Zed\AvailabilityNotification\Communication\Plugin\Mail\AvailabilityNotificationUnsubscribedMailTypeBuilderPlugin;
@@ -84,6 +85,7 @@ class MailDependencyProvider extends SprykerMailDependencyProvider
             new GiftCardDeliveryMailTypeBuilderPlugin(),
             new GiftCardUsageMailTypeBuilderPlugin(),
             new OrderInvoiceMailTypeBuilderPlugin(),
+            new TaskOverdueMailTypeBuilderPlugin(),
         ];
     }
 }

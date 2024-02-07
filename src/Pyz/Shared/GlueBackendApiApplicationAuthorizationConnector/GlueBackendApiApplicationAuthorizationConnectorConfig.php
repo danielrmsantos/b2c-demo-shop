@@ -38,6 +38,9 @@ class GlueBackendApiApplicationAuthorizationConnectorConfig extends SprykerGlueB
                     'patch',
                 ],
             ],
+            '/\/tasks.*/' => [
+                'isRegularExpression' => true,
+            ],
         ];
     }
 }
