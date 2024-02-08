@@ -29,6 +29,7 @@ class TaskRepository extends AbstractRepository implements TaskRepositoryInterfa
     public function getTaskCollection(TaskCriteriaTransfer $taskCriteriaTransfer): TaskCollectionTransfer
     {
         $taskQuery = $this->getFactory()->getTaskQuery();
+        $taskQuery = $this->applyTaskSearch($taskQuery, $taskCriteriaTransfer);
         $taskQuery = $this->applyTaskFilters($taskQuery, $taskCriteriaTransfer);
 
         $sortTransfers = $taskCriteriaTransfer->getSortCollection();
@@ -67,6 +68,41 @@ class TaskRepository extends AbstractRepository implements TaskRepositoryInterfa
 
         if ($taskConditionsTransfer->getDueDate()) {
             $taskQuery->filterByDueDate($taskConditionsTransfer->getDueDateOrFail());
+        }
+
+        if ($taskConditionsTransfer->getTitle()) {
+            $taskQuery->filterByTitle($taskConditionsTransfer->getTitle());
+        }
+
+        if ($taskConditionsTransfer->getDescription()) {
+            $taskQuery->filterByDescription($taskConditionsTransfer->getDescription());
+        }
+
+        return $taskQuery;
+    }
+
+    /**
+     * @param \Orm\Zed\Task\Persistence\PyzTaskQuery $taskQuery
+     * @param \Generated\Shared\Transfer\TaskCriteriaTransfer $taskCriteriaTransfer
+     *
+     * @return \Orm\Zed\Task\Persistence\PyzTaskQuery
+     */
+    protected function applyTaskSearch(PyzTaskQuery $taskQuery, TaskCriteriaTransfer $taskCriteriaTransfer): PyzTaskQuery
+    {
+        $taskSearchConditionsTransfer = $taskCriteriaTransfer->getTaskSearchConditions();
+
+        if (!$taskSearchConditionsTransfer) {
+            return $taskQuery;
+        }
+
+        if ($taskSearchConditionsTransfer->getSearchString()) {
+            $taskQuery
+                ->_or()
+                ->filterByTitle_Like(sprintf('%%%s%%', $taskSearchConditionsTransfer->getSearchString()));
+
+            $taskQuery
+                ->_or()
+                ->filterByDescription_Like(sprintf('%%%s%%', $taskSearchConditionsTransfer->getSearchString()));
         }
 
         return $taskQuery;

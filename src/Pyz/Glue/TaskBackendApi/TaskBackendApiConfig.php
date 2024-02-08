@@ -15,4 +15,9 @@ class TaskBackendApiConfig extends AbstractBundleConfig
      * @var string
      */
     public const RESOURCE_TASK = 'task';
+
+    /**
+     * @var string
+     */
+    public const QUERY_STRING_PARAMETER = 'q';
 }

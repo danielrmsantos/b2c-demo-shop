@@ -31,7 +31,12 @@ class TaskBackendApiController extends AbstractController
      *              },
      *              {
      *                  "ref": "Sort"
-     *              }
+     *              },
+     *              {
+     *                  "name": "q",
+     *                  "in": "query",
+     *                  "description": "Search query string."
+     *               }
      *          ],
      *          "responses": {
      *              "400": "Bad Request",

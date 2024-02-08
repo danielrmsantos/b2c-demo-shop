@@ -15,14 +15,9 @@ use Generated\Shared\Transfer\TaskCollectionTransfer;
 use Generated\Shared\Transfer\TaskTransfer;
 use Orm\Zed\Task\Persistence\PyzTask;
 use Pyz\Zed\Task\Persistence\Propel\Mapper\TaskMapper;
-use SprykerTest\Shared\Testify\Helper\DataCleanupHelperTrait;
-use SprykerTest\Shared\Testify\Helper\LocatorHelperTrait;
 
 class TaskDataHelper extends Module
 {
-    use LocatorHelperTrait;
-    use DataCleanupHelperTrait;
-
     /**
      * @param array $seed
      *

@@ -37,6 +37,7 @@ class TaskBackendApiFactory extends AbstractFactory
             $this->getTaskFacade(),
             $this->createTaskResponseBuilder(),
             $this->createErrorResponseBuilder(),
+            $this->createTaskMapper(),
         );
     }
 

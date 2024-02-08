@@ -8,11 +8,13 @@
 namespace PyzTest\Glue\TaskBackendApi\Controller;
 
 use Codeception\Test\Unit;
+use Generated\Shared\Transfer\GlueFilterTransfer;
 use Generated\Shared\Transfer\GlueResourceTransfer;
 use Generated\Shared\Transfer\PaginationTransfer;
 use Generated\Shared\Transfer\TaskTransfer;
 use Orm\Zed\Task\Persistence\PyzTaskQuery;
 use Pyz\Glue\TaskBackendApi\Controller\TaskBackendApiController;
+use Pyz\Glue\TaskBackendApi\TaskBackendApiConfig;
 use PyzTest\Glue\TaskBackendApi\TaskBackendApiTester;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -94,6 +96,63 @@ class TaskBackendApiControllerTest extends Unit
         //Assert
         $this->tester->assertGlueResponseHasCorrectData($taskTransfer, $glueResponseTransfer, $limit);
         $this->assertNotNull($glueResponseTransfer->getPagination());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetCollectionActionReturnsFilteredTaskCollectionThatMatchesExactCondition(): void
+    {
+        //Arrange
+        $userTransfer = $this->tester->haveUser();
+        $this->tester->haveTaskCollectionWithPersistedTasks(10, [TaskTransfer::ID_AUTHOR => $userTransfer->getIdUser()]);
+
+        $taskTitle = 'A very nice task 12345!!';
+        $taskTransfer = $this->tester->haveTaskPersisted([
+            TaskTransfer::ID_AUTHOR => $userTransfer->getIdUser(),
+            TaskTransfer::TITLE => $taskTitle,
+        ]);
+
+        $glueRequestTransfer = $this->tester->haveGlueRequestTransferWithRequestUserTransfer($userTransfer);
+
+        $glueFilterTransfer = (new GlueFilterTransfer())->setResource(TaskBackendApiConfig::RESOURCE_TASK)->setField('title')->setValue($taskTitle);
+        $glueRequestTransfer->addFilter($glueFilterTransfer);
+
+        //Act
+        $glueResponseTransfer = $this->controller->getCollectionAction($glueRequestTransfer);
+
+        //Assert
+        $this->tester->assertGlueResponseHasCorrectData($taskTransfer, $glueResponseTransfer, 1);
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetCollectionActionReturnsTaskCollectionWithTasksThatPartiallyMatchesTitleOrDescriptionToQueryString(): void
+    {
+        //Arrange
+        $userTransfer = $this->tester->haveUser();
+        $this->tester->haveTaskCollectionWithPersistedTasks(10, [TaskTransfer::ID_AUTHOR => $userTransfer->getIdUser()]);
+
+        $example = 'A very nice task 12345!!';
+        $this->tester->haveTaskPersisted([
+            TaskTransfer::ID_AUTHOR => $userTransfer->getIdUser(),
+            TaskTransfer::TITLE => $example,
+        ]);
+
+        $this->tester->haveTaskPersisted([
+            TaskTransfer::ID_AUTHOR => $userTransfer->getIdUser(),
+            TaskTransfer::DESCRIPTION => $example,
+        ]);
+
+        $glueRequestTransfer = $this->tester->haveGlueRequestTransferWithRequestUserTransfer($userTransfer);
+        $glueRequestTransfer->setQueryFields([TaskBackendApiConfig::QUERY_STRING_PARAMETER => 'task 12345']);
+
+        //Act
+        $glueResponseTransfer = $this->controller->getCollectionAction($glueRequestTransfer);
+
+        //Assert
+        $this->assertCount(2, $glueResponseTransfer->getResources());
     }
 
     /**

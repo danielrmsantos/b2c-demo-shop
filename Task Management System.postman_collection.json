@@ -1,64 +1,551 @@
 {
 	"info": {
-		"_postman_id": "0563746d-e0b4-47b2-be66-b04de3f45b7d",
-		"name": "Task Management System",
+		"_postman_id": "96229457-d50d-4858-bb9f-658389277a8b",
+		"name": "Task Management System Module",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "25805018"
 	},
 	"item": [
 		{
-			"name": "Tasks",
+			"name": "tasks",
 			"item": [
 				{
-					"name": "Get Task",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/vnd.api+json",
-								"type": "text"
+					"name": "{idTask}",
+					"item": [
+						{
+							"name": "Get Task by ID",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/vnd.api+json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/tasks/:idTask",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tasks",
+										":idTask"
+									],
+									"variable": [
+										{
+											"key": "idTask",
+											"value": "{{taskId}}",
+											"description": "(Required) "
+										}
+									]
+								},
+								"description": "Get Task by ID"
 							},
-							{
-								"key": "Cookie",
-								"value": "XDEBUG_SESSION=PHPSTORM",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{glue_backend_url}}/tasks/:idTask",
-							"host": [
-								"{{glue_backend_url}}"
-							],
-							"path": [
-								"tasks",
-								":idTask"
-							],
-							"variable": [
+							"response": [
 								{
-									"key": "idTask",
-									"value": "{{taskId}}"
+									"name": "Expected response to a valid request returned successfully.",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.api+json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/tasks/:idTask",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"tasks",
+												":idTask"
+											],
+											"variable": [
+												{
+													"key": "idTask"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/vnd.api+json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"data\": {\n    \"id\": \"<integer>\",\n    \"type\": \"<string>\",\n    \"attributes\": {\n      \"title\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"status\": \"<string>\",\n      \"description\": \"<string>\",\n      \"idAssignedUser\": \"<integer>\"\n    }\n  }\n}"
+								},
+								{
+									"name": "Unauthorized request.",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.api+json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/tasks/:idTask",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"tasks",
+												":idTask"
+											],
+											"variable": [
+												{
+													"key": "idTask"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/vnd.api+json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"status\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Not Found.",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.api+json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/tasks/:idTask",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"tasks",
+												":idTask"
+											],
+											"variable": [
+												{
+													"key": "idTask"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/vnd.api+json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"status\": \"<integer>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Delete Task",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/tasks/:idTask",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tasks",
+										":idTask"
+									],
+									"variable": [
+										{
+											"key": "idTask",
+											"value": "{{taskId}}",
+											"description": "(Required) "
+										}
+									]
+								},
+								"description": "Delete Task"
+							},
+							"response": [
+								{
+									"name": "The Task was deleted successfully.",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/tasks/:idTask",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"tasks",
+												":idTask"
+											],
+											"variable": [
+												{
+													"key": "idTask"
+												}
+											]
+										}
+									},
+									"status": "No Content",
+									"code": 204,
+									"_postman_previewlanguage": "text",
+									"header": [],
+									"cookie": [],
+									"body": ""
+								},
+								{
+									"name": "Unauthorized request.",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/vnd.api+json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/tasks/:idTask",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"tasks",
+												":idTask"
+											],
+											"variable": [
+												{
+													"key": "idTask"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/vnd.api+json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"status\": \"<integer>\"\n}"
+								}
+							]
+						},
+						{
+							"name": "Update Task",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{bearerToken}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/vnd.api+json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"data\": {\n        \"title\": \"{{$randomCatchPhrase}}\",\n        \"description\": \"{{$randomLoremParagraph}}\",\n        \"status\": \"to-do\",\n        \"dueDate\": \"{{date}}\",\n        \"idAssignedUser\": null\n    }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/tasks/:idTask",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tasks",
+										":idTask"
+									],
+									"variable": [
+										{
+											"key": "idTask",
+											"value": "{{taskId}}",
+											"description": "(Required) "
+										}
+									]
+								},
+								"description": "Update Task"
+							},
+							"response": [
+								{
+									"name": "Expected response to a valid request returned successfully.",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.api+json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/vnd.api+json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"data\": {\n    \"title\": \"<string>\",\n    \"dueDate\": \"<string>\",\n    \"status\": \"<string>\",\n    \"description\": \"<string>\",\n    \"idAssignedUser\": \"<integer>\"\n  }\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/tasks/:idTask",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"tasks",
+												":idTask"
+											],
+											"variable": [
+												{
+													"key": "idTask"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/vnd.api+json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"data\": {\n    \"id\": \"<integer>\",\n    \"type\": \"<string>\",\n    \"attributes\": {\n      \"title\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"status\": \"<string>\",\n      \"description\": \"<string>\",\n      \"idAssignedUser\": \"<integer>\"\n    }\n  }\n}"
+								},
+								{
+									"name": "An error occurred.",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.api+json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/vnd.api+json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"data\": {\n    \"title\": \"<string>\",\n    \"dueDate\": \"<string>\",\n    \"status\": \"<string>\",\n    \"description\": \"<string>\",\n    \"idAssignedUser\": \"<integer>\"\n  }\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/tasks/:idTask",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"tasks",
+												":idTask"
+											],
+											"variable": [
+												{
+													"key": "idTask"
+												}
+											]
+										}
+									},
+									"status": "Bad Request",
+									"code": 400,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/vnd.api+json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"status\": \"<integer>\"\n}"
+								},
+								{
+									"name": "Unauthorized request.",
+									"originalRequest": {
+										"method": "PATCH",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/vnd.api+json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/vnd.api+json"
+											},
+											{
+												"description": "Added as a part of security scheme: bearer",
+												"key": "Authorization",
+												"value": "Bearer <token>"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"data\": {\n    \"title\": \"<string>\",\n    \"dueDate\": \"<string>\",\n    \"status\": \"<string>\",\n    \"description\": \"<string>\",\n    \"idAssignedUser\": \"<integer>\"\n  }\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/tasks/:idTask",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"tasks",
+												":idTask"
+											],
+											"variable": [
+												{
+													"key": "idTask"
+												}
+											]
+										}
+									},
+									"status": "Forbidden",
+									"code": 403,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/vnd.api+json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"code\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"status\": \"<integer>\"\n}"
 								}
 							]
 						}
-					},
-					"response": []
+					]
 				},
 				{
 					"name": "Get Task Collection",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/vnd.api+json",
-								"type": "text"
+								"value": "application/vnd.api+json"
 							}
 						],
 						"url": {
-							"raw": "{{glue_backend_url}}/tasks",
+							"raw": "{{baseUrl}}/tasks",
 							"host": [
-								"{{glue_backend_url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"tasks"
@@ -67,23 +554,19 @@
 								{
 									"key": "page[offset]",
 									"value": "0",
+									"description": "Page offset",
 									"disabled": true
 								},
 								{
 									"key": "page[limit]",
 									"value": "1",
+									"description": "Page limit",
 									"disabled": true
 								},
 								{
 									"key": "sort",
-									"value": "-title",
+									"value": "title",
 									"description": "Sort by Title descending",
-									"disabled": true
-								},
-								{
-									"key": "sort",
-									"value": "dueDate",
-									"description": "Sort by due date ascending",
 									"disabled": true
 								},
 								{
@@ -91,41 +574,195 @@
 									"value": "title,dueDate",
 									"description": "Get Only Title and Due date fields",
 									"disabled": true
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Delete Task",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/vnd.api+json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{glue_backend_url}}/tasks/:idTask",
-							"host": [
-								"{{glue_backend_url}}"
-							],
-							"path": [
-								"tasks",
-								":idTask"
-							],
-							"variable": [
+								},
 								{
-									"key": "idTask",
-									"value": "{{taskId}}"
+									"key": "filter[task.title]",
+									"value": "<string>",
+									"description": "Filter by Task Title",
+									"disabled": true
+								},
+								{
+									"key": "filter[task.description]",
+									"value": "<string>",
+									"description": "Filter by Task Title",
+									"disabled": true
+								},
+								{
+									"key": "filter[task.dueDate]",
+									"value": "2024-01-01",
+									"description": "Filter by Task Due date",
+									"disabled": true
+								},
+								{
+									"key": "q",
+									"value": "Asperiores",
+									"description": "Search Task by Title or Description",
+									"disabled": true
 								}
 							]
-						}
+						},
+						"description": "Get Task Collection"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Get collection of Tasks.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.api+json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/tasks?page[offset]=<string>&page[limit]=<string>&sort=<string>&fields[task]=<string>&filter[task.title]=<string>&filter[task.description]=<string>&filter[task.dueDate]=<string>&q=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tasks"
+									],
+									"query": [
+										{
+											"key": "page[offset]",
+											"value": "<string>",
+											"description": "Page offset"
+										},
+										{
+											"key": "page[limit]",
+											"value": "<string>",
+											"description": "Page limit"
+										},
+										{
+											"key": "sort",
+											"value": "<string>",
+											"description": "Sort by Title descending"
+										},
+										{
+											"key": "fields[task]",
+											"value": "<string>",
+											"description": "Get Only Title and Due date fields"
+										},
+										{
+											"key": "filter[task.title]",
+											"value": "<string>",
+											"description": "Filter by Task Title"
+										},
+										{
+											"key": "filter[task.description]",
+											"value": "<string>",
+											"description": "Filter by Task Title"
+										},
+										{
+											"key": "filter[task.dueDate]",
+											"value": "<string>",
+											"description": "Filter by Task Due date"
+										},
+										{
+											"key": "q",
+											"value": "<string>",
+											"description": "Search Task by Title or Description"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/vnd.api+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"id\": \"<integer>\",\n      \"type\": \"<string>\",\n      \"attributes\": {\n        \"title\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"status\": \"<string>\",\n        \"description\": \"<string>\",\n        \"idAssignedUser\": \"<integer>\"\n      }\n    },\n    {\n      \"id\": \"<integer>\",\n      \"type\": \"<string>\",\n      \"attributes\": {\n        \"title\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"status\": \"<string>\",\n        \"description\": \"<string>\",\n        \"idAssignedUser\": \"<integer>\"\n      }\n    }\n  ]\n}"
+						},
+						{
+							"name": "Unauthorized request.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/vnd.api+json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/tasks?page[offset]=<string>&page[limit]=<string>&sort=<string>&fields[task]=<string>&filter[task.title]=<string>&filter[task.description]=<string>&filter[task.dueDate]=<string>&q=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tasks"
+									],
+									"query": [
+										{
+											"key": "page[offset]",
+											"value": "<string>",
+											"description": "Page offset"
+										},
+										{
+											"key": "page[limit]",
+											"value": "<string>",
+											"description": "Page limit"
+										},
+										{
+											"key": "sort",
+											"value": "<string>",
+											"description": "Sort by Title descending"
+										},
+										{
+											"key": "fields[task]",
+											"value": "<string>",
+											"description": "Get Only Title and Due date fields"
+										},
+										{
+											"key": "filter[task.title]",
+											"value": "<string>",
+											"description": "Filter by Task Title"
+										},
+										{
+											"key": "filter[task.description]",
+											"value": "<string>",
+											"description": "Filter by Task Title"
+										},
+										{
+											"key": "filter[task.dueDate]",
+											"value": "<string>",
+											"description": "Filter by Task Due date"
+										},
+										{
+											"key": "q",
+											"value": "<string>",
+											"description": "Search Task by Title or Description"
+										}
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/vnd.api+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"status\": \"<integer>\"\n}"
+						}
+					]
 				},
 				{
 					"name": "Create Task Collection",
@@ -155,24 +792,26 @@
 							}
 						}
 					],
-					"protocolProfileBehavior": {
-						"disabledSystemHeaders": {
-							"content-type": true
-						}
-					},
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{bearerToken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
-								"value": "application/vnd.api+json",
-								"type": "text"
+								"value": "application/vnd.api+json"
 							},
 							{
-								"key": "Cookie",
-								"value": "XDEBUG_SESSION=PHPSTORM",
-								"type": "text",
-								"disabled": true
+								"key": "Accept",
+								"value": "application/vnd.api+json"
 							}
 						],
 						"body": {
@@ -180,108 +819,182 @@
 							"raw": "{\n    \"data\": [\n        {\n            \"title\": \"{{$randomCatchPhrase}}\",\n            \"description\": \"{{$randomLoremParagraph}}\",\n            \"status\": \"to-do\",\n            \"dueDate\": \"{{date}}\",\n            \"idAssignedUser\": 2\n        },\n        {\n            \"title\": \"{{$randomCatchPhrase}}\",\n            \"description\": \"{{$randomLoremParagraph}}\",\n            \"status\": \"in-progress\",\n            \"dueDate\": \"{{date}}\"\n        }\n    ]\n}",
 							"options": {
 								"raw": {
+									"headerFamily": "json",
 									"language": "json"
 								}
 							}
 						},
 						"url": {
-							"raw": "{{glue_backend_url}}/tasks",
+							"raw": "{{baseUrl}}/tasks",
 							"host": [
-								"{{glue_backend_url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"tasks"
 							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Update Task",
-					"event": [
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									"let moment = require('moment');",
-									"",
-									"pm.collectionVariables.set('date', moment().format((\"YYYY-MM-DD\")));"
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"method": "PATCH",
-						"header": [
-							{
-								"key": "Content-Type",
-								"value": "application/vnd.api+json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"data\": {\n        \"title\": \"{{$randomCatchPhrase}}\",\n        \"description\": \"{{$randomLoremParagraph}}\",\n        \"status\": \"to-do\",\n        \"dueDate\": \"{{date}}\",\n        \"idAssignedUser\": null\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
 						},
-						"url": {
-							"raw": "{{glue_backend_url}}/tasks/:idTask",
-							"host": [
-								"{{glue_backend_url}}"
-							],
-							"path": [
-								"tasks",
-								":idTask"
-							],
-							"variable": [
-								{
-									"key": "idTask",
-									"value": "{{taskId}}"
-								}
-							]
-						}
+						"description": "Create Task Collection"
 					},
-					"response": []
-				}
-			],
-			"auth": {
-				"type": "bearer",
-				"bearer": [
-					{
-						"key": "token",
-						"value": "{{access_token}}",
-						"type": "string"
-					}
-				]
-			},
-			"event": [
-				{
-					"listen": "prerequest",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
-				},
-				{
-					"listen": "test",
-					"script": {
-						"type": "text/javascript",
-						"exec": [
-							""
-						]
-					}
+					"response": [
+						{
+							"name": "Expected response to a valid request returned successfully.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/vnd.api+json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.api+json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"data\": [\n    {\n      \"title\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"status\": \"<string>\",\n      \"description\": \"<string>\",\n      \"idAssignedUser\": \"<integer>\"\n    },\n    {\n      \"title\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"status\": \"<string>\",\n      \"description\": \"<string>\",\n      \"idAssignedUser\": \"<integer>\"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/tasks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tasks"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/vnd.api+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"data\": [\n    {\n      \"id\": \"<integer>\",\n      \"type\": \"<string>\",\n      \"attributes\": {\n        \"title\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"status\": \"<string>\",\n        \"description\": \"<string>\",\n        \"idAssignedUser\": \"<integer>\"\n      }\n    },\n    {\n      \"id\": \"<integer>\",\n      \"type\": \"<string>\",\n      \"attributes\": {\n        \"title\": \"<string>\",\n        \"dueDate\": \"<string>\",\n        \"status\": \"<string>\",\n        \"description\": \"<string>\",\n        \"idAssignedUser\": \"<integer>\"\n      }\n    }\n  ]\n}"
+						},
+						{
+							"name": "An error occurred.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/vnd.api+json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.api+json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"data\": [\n    {\n      \"title\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"status\": \"<string>\",\n      \"description\": \"<string>\",\n      \"idAssignedUser\": \"<integer>\"\n    },\n    {\n      \"title\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"status\": \"<string>\",\n      \"description\": \"<string>\",\n      \"idAssignedUser\": \"<integer>\"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/tasks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tasks"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/vnd.api+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"status\": \"<integer>\"\n}"
+						},
+						{
+							"name": "Unauthorized request.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/vnd.api+json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/vnd.api+json"
+									},
+									{
+										"description": "Added as a part of security scheme: bearer",
+										"key": "Authorization",
+										"value": "Bearer <token>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"data\": [\n    {\n      \"title\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"status\": \"<string>\",\n      \"description\": \"<string>\",\n      \"idAssignedUser\": \"<integer>\"\n    },\n    {\n      \"title\": \"<string>\",\n      \"dueDate\": \"<string>\",\n      \"status\": \"<string>\",\n      \"description\": \"<string>\",\n      \"idAssignedUser\": \"<integer>\"\n    }\n  ]\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/tasks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tasks"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/vnd.api+json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"status\": \"<integer>\"\n}"
+						}
+					]
 				}
 			]
 		},
 		{
-			"name": "Backoffice User Authentication",
+			"name": "token",
 			"item": [
 				{
 					"name": "Get Access Token",
@@ -290,8 +1003,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var jsonData = JSON.parse(responseBody);",
-									"pm.collectionVariables.set(\"access_token\", jsonData.access_token);"
+									"let jsonData = JSON.parse(responseBody);",
+									"pm.collectionVariables.set(\"bearerToken\", jsonData.access_token);"
 								],
 								"type": "text/javascript"
 							}
@@ -302,38 +1015,161 @@
 							"type": "noauth"
 						},
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
 									"key": "grant_type",
 									"value": "password",
-									"type": "text"
+									"description": "(Required) "
 								},
 								{
 									"key": "username",
 									"value": "email@domain.com",
-									"type": "text"
+									"description": "(Required) "
 								},
 								{
 									"key": "password",
-									"value": "very-strong!PaSsWoRd",
-									"type": "text"
+									"value": "stronPasSwOrD!",
+									"description": "(Required) "
 								}
 							]
 						},
 						"url": {
-							"raw": "{{glue_backend_url}}/token",
+							"raw": "{{baseUrl}}/token",
 							"host": [
-								"{{glue_backend_url}}"
+								"{{baseUrl}}"
 							],
 							"path": [
 								"token"
 							]
-						}
+						},
+						"description": "Get Access Token"
 					},
-					"response": []
+					"response": [
+						{
+							"name": "Expected response to a valid request returned successfully.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "grant_type",
+											"value": "<string>",
+											"description": "(Required) "
+										},
+										{
+											"key": "username",
+											"value": "<string>",
+											"description": "(Required) "
+										},
+										{
+											"key": "password",
+											"value": "<string>",
+											"description": "(Required) "
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"token"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"token_type\": \"<string>\",\n  \"expires_in\": \"<integer>\",\n  \"access_token\": \"<string>\",\n  \"refresh_token\": \"<string>\"\n}"
+						},
+						{
+							"name": "An error occurred.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "grant_type",
+											"value": "<string>",
+											"description": "(Required) "
+										},
+										{
+											"key": "username",
+											"value": "<string>",
+											"description": "(Required) "
+										},
+										{
+											"key": "password",
+											"value": "<string>",
+											"description": "(Required) "
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/token",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"token"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"<string>\",\n  \"detail\": \"<string>\",\n  \"status\": \"<integer>\"\n}"
+						}
+					]
 				}
 			]
 		}
@@ -343,7 +1179,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "{{access_token}}",
+				"value": "{{bearerToken}}",
 				"type": "string"
 			}
 		]
@@ -370,18 +1206,18 @@
 	],
 	"variable": [
 		{
-			"key": "glue_backend_url",
-			"value": "http://glue-backend.de.spryker.local",
+			"key": "baseUrl",
+			"value": "http://glue-backend.de.spryker.local"
+		},
+		{
+			"key": "bearerToken",
+			"value": "",
 			"type": "string"
 		},
 		{
 			"key": "date",
 			"value": "",
 			"type": "string"
-		},
-		{
-			"key": "access_token",
-			"value": ""
 		},
 		{
 			"key": "taskId",

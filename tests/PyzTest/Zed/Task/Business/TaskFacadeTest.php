@@ -15,6 +15,7 @@ use Generated\Shared\Transfer\TaskCollectionDeleteCriteriaTransfer;
 use Generated\Shared\Transfer\TaskCollectionRequestTransfer;
 use Generated\Shared\Transfer\TaskConditionsTransfer;
 use Generated\Shared\Transfer\TaskCriteriaTransfer;
+use Generated\Shared\Transfer\TaskSearchConditionsTransfer;
 use Generated\Shared\Transfer\TaskTransfer;
 use Generated\Shared\Transfer\UserTransfer;
 use Pyz\Zed\Task\Business\Validator\TaskValidator;
@@ -90,6 +91,66 @@ class TaskFacadeTest extends Unit
         // Assert
         $this->assertCount($limit, $taskCollectionTransfer->getTasks());
         $this->assertNotNull($taskCollectionTransfer->getPagination());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetTaskCollectionReturnsFilteredTaskCollectionThatMatchesExactCondition(): void
+    {
+        // Arrange
+        $userTransfer = $this->tester->haveUser();
+        $this->tester->haveTaskCollectionWithPersistedTasks(5, [TaskTransfer::ID_AUTHOR => $userTransfer->getIdUser()]);
+
+        $taskTitle = 'A very nice task 12345!!';
+        $taskTransfer = $this->tester->haveTaskPersisted([
+            TaskTransfer::ID_AUTHOR => $userTransfer->getIdUser(),
+            TaskTransfer::TITLE => $taskTitle,
+        ]);
+
+        $matchingTaskConditionsTransfer = (new TaskConditionsTransfer())->setTitle($taskTransfer->getTitle());
+        $matchingTaskCriteriaTransfer = (new TaskCriteriaTransfer())->setTaskConditions($matchingTaskConditionsTransfer);
+
+        $nonMatchingTaskConditionsTransfer = (new TaskConditionsTransfer())->setTitle('task 12345');
+        $nonMatchingTaskCriteriaTransfer = (new TaskCriteriaTransfer())->setTaskConditions($nonMatchingTaskConditionsTransfer);
+
+        // Act
+        $matchingTaskCollectionTransfer = $this->tester->getFacade()->getTaskCollection($matchingTaskCriteriaTransfer);
+        $nonMatchingTaskCollectionTransfer = $this->tester->getFacade()->getTaskCollection($nonMatchingTaskCriteriaTransfer);
+
+        // Assert
+        $this->assertCount(0, $nonMatchingTaskCollectionTransfer->getTasks());
+        $this->assertCount(1, $matchingTaskCollectionTransfer->getTasks());
+    }
+
+    /**
+     * @return void
+     */
+    public function testGetTaskCollectionReturnsTaskCollectionWithTasksThatPartiallyMatchesTitleOrDescriptionToSearchString(): void
+    {
+        // Arrange
+        $userTransfer = $this->tester->haveUser();
+        $this->tester->haveTaskCollectionWithPersistedTasks(5, [TaskTransfer::ID_AUTHOR => $userTransfer->getIdUser()]);
+
+        $example = 'A very nice task 12345!!';
+        $this->tester->haveTaskPersisted([
+            TaskTransfer::ID_AUTHOR => $userTransfer->getIdUser(),
+            TaskTransfer::TITLE => $example,
+        ]);
+
+        $this->tester->haveTaskPersisted([
+            TaskTransfer::ID_AUTHOR => $userTransfer->getIdUser(),
+            TaskTransfer::DESCRIPTION => $example,
+        ]);
+
+        $taskSearchConditionsTransfer = (new TaskSearchConditionsTransfer())->setSearchString('task 12345');
+        $taskCriteriaTransfer = (new TaskCriteriaTransfer())->setTaskSearchConditions($taskSearchConditionsTransfer);
+
+        // Act
+        $taskCollectionTransfer = $this->tester->getFacade()->getTaskCollection($taskCriteriaTransfer);
+
+        // Assert
+        $this->assertCount(2, $taskCollectionTransfer->getTasks());
     }
 
     /**

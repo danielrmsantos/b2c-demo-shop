@@ -7,10 +7,13 @@
 
 namespace Pyz\Glue\TaskBackendApi\Mapper;
 
+use ArrayObject;
 use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueResourceTransfer;
 use Generated\Shared\Transfer\TaskBackendApiAttributesTransfer;
 use Generated\Shared\Transfer\TaskCollectionRequestTransfer;
+use Generated\Shared\Transfer\TaskConditionsTransfer;
+use Generated\Shared\Transfer\TaskSearchConditionsTransfer;
 use Generated\Shared\Transfer\TaskTransfer;
 use Pyz\Glue\TaskBackendApi\Dependency\Service\TaskBackendApiToUtilEncodingServiceInterface;
 use Pyz\Glue\TaskBackendApi\TaskBackendApiConfig;
@@ -54,7 +57,7 @@ class TaskMapper implements TaskMapperInterface
      *
      * @return \Generated\Shared\Transfer\TaskCollectionRequestTransfer
      */
-    public function mapGlueRequestToTaskCollectionRequestTransfer(
+    public function mapGlueRequestTransferToTaskCollectionRequestTransfer(
         GlueRequestTransfer $glueRequestTransfer,
         TaskCollectionRequestTransfer $taskCollectionRequestTransfer,
     ): TaskCollectionRequestTransfer {
@@ -122,6 +125,55 @@ class TaskMapper implements TaskMapperInterface
         $taskTransfer->setIdAuthor($this->getUserIdFromGlueRequest($glueRequestTransfer));
 
         return $taskTransfer;
+    }
+
+    /**
+     * @param \ArrayObject<array-key, \Generated\Shared\Transfer\GlueFilterTransfer> $glueFilterTransfers
+     * @param \Generated\Shared\Transfer\TaskConditionsTransfer $taskConditionsTransfer
+     *
+     * @return \Generated\Shared\Transfer\TaskConditionsTransfer
+     */
+    public function mapGlueFilterTransfersToTaskConditionsTransfer(
+        ArrayObject $glueFilterTransfers,
+        TaskConditionsTransfer $taskConditionsTransfer,
+    ): TaskConditionsTransfer {
+        if (!$glueFilterTransfers->count()) {
+            return $taskConditionsTransfer;
+        }
+
+        foreach ($glueFilterTransfers as $filter) {
+            if ($filter->getResource() !== TaskBackendApiConfig::RESOURCE_TASK) {
+                continue;
+            }
+
+            match ($filter->getField()) {
+                TaskTransfer::TITLE => $taskConditionsTransfer->setTitle($filter->getValue()),
+                TaskTransfer::DESCRIPTION => $taskConditionsTransfer->setDescription($filter->getValue()),
+                TaskTransfer::DUE_DATE => $taskConditionsTransfer->setDueDate($filter->getValue()),
+                default => '',
+            };
+        }
+
+        return $taskConditionsTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\GlueRequestTransfer $glueRequestTransfer
+     * @param \Generated\Shared\Transfer\TaskSearchConditionsTransfer $taskSearchConditionsTransfer
+     *
+     * @return \Generated\Shared\Transfer\TaskSearchConditionsTransfer
+     */
+    public function mapGlueRequestToTaskSearchConditionsTransfer(
+        GlueRequestTransfer $glueRequestTransfer,
+        TaskSearchConditionsTransfer $taskSearchConditionsTransfer,
+    ): TaskSearchConditionsTransfer {
+        $searchString = $glueRequestTransfer->getQueryFields()[TaskBackendApiConfig::QUERY_STRING_PARAMETER] ?? null;
+
+        if (!$searchString) {
+            return $taskSearchConditionsTransfer;
+        }
+
+        return $taskSearchConditionsTransfer->setSearchString($searchString);
     }
 
     /**

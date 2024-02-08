@@ -1,0 +1,353 @@
+openapi: 3.0.3
+info:
+    title: Task Management System Module
+    version: 1.0.0
+    contact: { }
+servers:
+    -   url: http://glue-backend.de.spryker.local
+paths:
+    /tasks/{idTask}:
+        get:
+            tags:
+                - Tasks
+            summary: Get Task by ID
+            description: Get Task by ID
+            operationId: getTask
+            responses:
+                '200':
+                    description: 'Expected response to a valid request returned successfully.'
+                    content:
+                        application/vnd.api+json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1
+                                            type:
+                                                type: string
+                                                example: task
+                                            attributes:
+                                                $ref: '#/components/schemas/Task'
+                '403':
+                    description: 'Unauthorized request.'
+                    content:
+                        application/vnd.api+json:
+                            schema:
+                                $ref: '#/components/schemas/RestErrorMessage'
+                '404':
+                    description: 'Not Found.'
+                    content:
+                        application/vnd.api+json:
+                            schema:
+                                $ref: '#/components/schemas/RestErrorMessage'
+            security:
+                -   bearerAuth: [ ]
+        delete:
+            tags:
+                - Tasks
+            summary: Delete Task
+            description: Delete Task
+            operationId: deleteTask
+            responses:
+                '204':
+                    description: 'The Task was deleted successfully.'
+                '403':
+                    description: 'Unauthorized request.'
+                    content:
+                        application/vnd.api+json:
+                            schema:
+                                $ref: '#/components/schemas/RestErrorMessage'
+            security:
+                -   bearerAuth: [ ]
+        patch:
+            tags:
+                - Tasks
+            summary: Update Task
+            description: Update Task
+            operationId: updateTask
+            requestBody:
+                description: 'Data to update Task.'
+                content:
+                    application/vnd.api+json:
+                        schema:
+                            $ref: '#/components/schemas/TaskPayload'
+            responses:
+                '200':
+                    description: 'Expected response to a valid request returned successfully.'
+                    content:
+                        application/vnd.api+json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: object
+                                        properties:
+                                            id:
+                                                type: integer
+                                                example: 1
+                                            type:
+                                                type: string
+                                                example: task
+                                            attributes:
+                                                $ref: '#/components/schemas/Task'
+                '400':
+                    description: 'An error occurred.'
+                    content:
+                        application/vnd.api+json:
+                            schema:
+                                $ref: '#/components/schemas/RestErrorMessage'
+                '403':
+                    description: 'Unauthorized request.'
+                    content:
+                        application/vnd.api+json:
+                            schema:
+                                $ref: '#/components/schemas/RestErrorMessage'
+            security:
+                -   bearerAuth: [ ]
+        parameters:
+            -   name: idTask
+                in: path
+                required: true
+                schema:
+                    type: string
+                    example: '{{taskId}}'
+    /tasks:
+        get:
+            tags:
+                - Tasks
+            summary: Get Task Collection
+            description: Get Task Collection
+            operationId: getTaskCollection
+            parameters:
+                -   name: page[offset]
+                    in: query
+                    schema:
+                        type: string
+                        example: '0'
+                    description: Page offset
+                -   name: page[limit]
+                    in: query
+                    schema:
+                        type: string
+                        example: '1'
+                    description: Page limit
+                -   name: sort
+                    in: query
+                    schema:
+                        type: string
+                        example: '-title'
+                    description: Sort by Title descending
+                -   name: fields[task]
+                    in: query
+                    schema:
+                        type: string
+                        example: title,dueDate
+                    description: Get Only Title and Due date fields
+                -   name: filter[task.title]
+                    in: query
+                    schema:
+                        type: string
+                        example: Self
+                    description: Filter by Task Title
+                -   name: filter[task.description]
+                    in: query
+                    schema:
+                        type: string
+                        example: Officiis
+                    description: Filter by Task Title
+                -   name: filter[task.dueDate]
+                    in: query
+                    schema:
+                        type: string
+                        example: '2024-02-07'
+                    description: Filter by Task Due date
+                -   name: q
+                    in: query
+                    schema:
+                        type: string
+                        example: Officiis
+                    description: Search Task by Title or Description
+            responses:
+                '200':
+                    description: 'Get collection of Tasks.'
+                    content:
+                        application/vnd.api+json:
+                            schema:
+                                $ref: '#/components/schemas/TaskArrayResponse'
+                '403':
+                    description: 'Unauthorized request.'
+                    content:
+                        application/vnd.api+json:
+                            schema:
+                                $ref: '#/components/schemas/RestErrorMessage'
+            security:
+                -   bearerAuth: [ ]
+        post:
+            tags:
+                - Tasks
+            summary: Create Task Collection
+            description: Create Task Collection
+            operationId: createTaskCollection
+            requestBody:
+                content:
+                    application/vnd.api+json:
+                        schema:
+                            type: object
+                            properties:
+                                data:
+                                    type: array
+                                    items:
+                                        $ref: '#/components/schemas/Task'
+            responses:
+                '201':
+                    description: 'Expected response to a valid request returned successfully.'
+                    content:
+                        application/vnd.api+json:
+                            schema:
+                                $ref: '#/components/schemas/TaskArrayResponse'
+                '400':
+                    description: 'An error occurred.'
+                    content:
+                        application/vnd.api+json:
+                            schema:
+                                $ref: '#/components/schemas/RestErrorMessage'
+                '403':
+                    description: 'Unauthorized request.'
+                    content:
+                        application/vnd.api+json:
+                            schema:
+                                $ref: '#/components/schemas/RestErrorMessage'
+            security:
+                -   bearerAuth: [ ]
+    /token:
+        post:
+            tags:
+                - Backoffice User Authentication
+            summary: Get Access Token
+            description: Get Access Token
+            operationId: getAccessToken
+            requestBody:
+                content:
+                    application/x-www-form-urlencoded:
+                        schema:
+                            type: object
+                            properties:
+                                grant_type:
+                                    type: string
+                                    example: password
+                                username:
+                                    type: string
+                                    example: email@domain.com
+                                password:
+                                    type: string
+                                    example: very-strong!PaSsWoRd
+                            required:
+                                - grant_type
+                                - username
+                                - password
+                        examples:
+                            Get Access Token:
+                                value:
+                                    grant_type: password
+                                    username: email@domain.com
+                                    password: very-strong!PaSsWoRd
+            responses:
+                '200':
+                    description: 'Expected response to a valid request returned successfully.'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    token_type:
+                                        type: string
+                                        example: Task description
+                                    expires_in:
+                                        type: integer
+                                        example: 28800
+                                    access_token:
+                                        type: string
+                                        example: <token>
+                                    refresh_token:
+                                        type: string
+                                        example: <token>
+
+                '400':
+                    description: 'An error occurred.'
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/RestErrorMessage'
+            security:
+                - { }
+components:
+    securitySchemes:
+        bearerAuth:
+            type: http
+            scheme: bearer
+
+    schemas:
+        Task:
+            type: object
+            properties:
+                title:
+                    type: string
+                    example: Task description
+                description:
+                    type: string
+                    example: Task title
+                dueDate:
+                    type: string
+                    example: 2024-01-01
+                status:
+                    type: string
+                    example: to-do
+                idAssignedUser:
+                    type: integer
+                    nullable: true
+                    example: 1
+            required:
+                - title
+                - dueDate
+                - status
+        TaskArrayResponse:
+            type: object
+            properties:
+                data:
+                    type: array
+                    items:
+                        type: object
+                        properties:
+                            id:
+                                type: integer
+                                example: 1
+                            type:
+                                type: string
+                                example: task
+                            attributes:
+                                $ref: '#/components/schemas/Task'
+
+        TaskPayload:
+            type: object
+            properties:
+                data:
+                    $ref: '#/components/schemas/Task'
+
+        RestErrorMessage:
+            properties:
+                code:
+                    type: string
+                detail:
+                    type: string
+                status:
+                    type: integer
+
+security:
+    -   bearerAuth: [ ]
+tags:
+    -   name: Tasks
+    -   name: Backoffice User Authentication

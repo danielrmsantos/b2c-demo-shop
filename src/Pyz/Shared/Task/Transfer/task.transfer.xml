@@ -18,6 +18,7 @@
 
     <transfer name="TaskCriteria" strict="true">
         <property name="taskConditions" type="TaskConditions"/>
+        <property name="taskSearchConditions" type="TaskSearchConditions"/>
         <property name="sortCollection" type="Sort[]" singular="sort"/>
         <property name="pagination" type="Pagination"/>
     </transfer>
@@ -29,6 +30,12 @@
     <transfer name="TaskConditions" strict="true">
         <property name="taskIds" type="int[]" singular="idTask"/>
         <property name="dueDate" type="string"/>
+        <property name="title" type="string"/>
+        <property name="description" type="string"/>
+    </transfer>
+
+    <transfer name="TaskSearchConditions" strict="true">
+        <property name="searchString" type="string"/>
     </transfer>
 
     <transfer name="TaskCollectionRequest" strict="true">

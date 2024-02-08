@@ -22,12 +22,8 @@ suites:
                 - \SprykerTest\Shared\Testify\Helper\ConfigHelper
                 - \SprykerTest\Shared\Testify\Helper\LocatorHelper:
                       projectNamespaces: ['Pyz']
-                - \SprykerTest\Shared\Testify\Helper\DependencyHelper
-                - \SprykerTest\Glue\GlueApplication\Helper\GlueBootstrap
-                - \SprykerTest\Service\Container\Helper\ContainerHelper
                 - \SprykerTest\Shared\Propel\Helper\TransactionHelper
                 - \SprykerTest\Shared\Testify\Helper\DataCleanupHelper
                 - \SprykerTest\Shared\Testify\Helper\TableRelationsCleanupHelper
-                - \SprykerTest\Glue\Testify\Helper\FactoryHelper
                 - \SprykerTest\Shared\User\Helper\UserDataHelper
                 - \PyzTest\Shared\Task\Helper\TaskDataHelper

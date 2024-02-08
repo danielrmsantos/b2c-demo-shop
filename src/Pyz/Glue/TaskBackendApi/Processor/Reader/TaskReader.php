@@ -12,7 +12,9 @@ use Generated\Shared\Transfer\GlueRequestTransfer;
 use Generated\Shared\Transfer\GlueResponseTransfer;
 use Generated\Shared\Transfer\TaskConditionsTransfer;
 use Generated\Shared\Transfer\TaskCriteriaTransfer;
+use Generated\Shared\Transfer\TaskSearchConditionsTransfer;
 use Pyz\Glue\TaskBackendApi\Dependency\Facade\TaskBackendApiToTaskFacadeInterface;
+use Pyz\Glue\TaskBackendApi\Mapper\TaskMapperInterface;
 use Pyz\Glue\TaskBackendApi\Processor\ResponseBuilder\ErrorResponseBuilderInterface;
 use Pyz\Glue\TaskBackendApi\Processor\ResponseBuilder\TaskResponseBuilderInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,18 +37,26 @@ class TaskReader implements TaskReaderInterface
     protected ErrorResponseBuilderInterface $errorResponseBuilder;
 
     /**
+     * @var \Pyz\Glue\TaskBackendApi\Mapper\TaskMapperInterface
+     */
+    protected TaskMapperInterface $taskMapper;
+
+    /**
      * @param \Pyz\Glue\TaskBackendApi\Dependency\Facade\TaskBackendApiToTaskFacadeInterface $taskFacade
      * @param \Pyz\Glue\TaskBackendApi\Processor\ResponseBuilder\TaskResponseBuilderInterface $taskResponseBuilder
      * @param \Pyz\Glue\TaskBackendApi\Processor\ResponseBuilder\ErrorResponseBuilderInterface $errorResponseBuilder
+     * @param \Pyz\Glue\TaskBackendApi\Mapper\TaskMapperInterface $taskMapper
      */
     public function __construct(
         TaskBackendApiToTaskFacadeInterface $taskFacade,
         TaskResponseBuilderInterface $taskResponseBuilder,
         ErrorResponseBuilderInterface $errorResponseBuilder,
+        TaskMapperInterface $taskMapper,
     ) {
         $this->taskFacade = $taskFacade;
         $this->taskResponseBuilder = $taskResponseBuilder;
         $this->errorResponseBuilder = $errorResponseBuilder;
+        $this->taskMapper = $taskMapper;
     }
 
     /**
@@ -54,10 +64,14 @@ class TaskReader implements TaskReaderInterface
      */
     public function getTaskCollection(GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer
     {
+        $taskConditionsTransfer = $this->taskMapper->mapGlueFilterTransfersToTaskConditionsTransfer($glueRequestTransfer->getFilters(), new TaskConditionsTransfer());
+        $taskSearchConditionsTransfer = $this->taskMapper->mapGlueRequestToTaskSearchConditionsTransfer($glueRequestTransfer, new TaskSearchConditionsTransfer());
+
         $taskCriteriaTransfer = (new TaskCriteriaTransfer())
             ->setPagination($glueRequestTransfer->getPagination())
             ->setSortCollection($glueRequestTransfer->getSortings())
-            ->setTaskConditions(new TaskConditionsTransfer());
+            ->setTaskConditions($taskConditionsTransfer)
+            ->setTaskSearchConditions($taskSearchConditionsTransfer);
 
         $taskTransfers = $this->taskFacade->getTaskCollection($taskCriteriaTransfer)->getTasks();
 

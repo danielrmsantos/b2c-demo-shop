@@ -60,7 +60,7 @@ class TaskWriter implements TaskWriterInterface
      */
     public function createTask(GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer
     {
-        $taskCollectionRequestTransfer = $this->taskMapper->mapGlueRequestToTaskCollectionRequestTransfer($glueRequestTransfer, new TaskCollectionRequestTransfer());
+        $taskCollectionRequestTransfer = $this->taskMapper->mapGlueRequestTransferToTaskCollectionRequestTransfer($glueRequestTransfer, new TaskCollectionRequestTransfer());
 
         if (!$taskCollectionRequestTransfer->getTasks()->count()) {
             return $this->errorResponseBuilder->createErrorResponseFromErrorMessage('Wrong request body.');
@@ -84,7 +84,7 @@ class TaskWriter implements TaskWriterInterface
      */
     public function updateTask(GlueRequestTransfer $glueRequestTransfer): GlueResponseTransfer
     {
-        $taskCollectionRequestTransfer = $this->taskMapper->mapGlueRequestToTaskCollectionRequestTransfer($glueRequestTransfer, new TaskCollectionRequestTransfer());
+        $taskCollectionRequestTransfer = $this->taskMapper->mapGlueRequestTransferToTaskCollectionRequestTransfer($glueRequestTransfer, new TaskCollectionRequestTransfer());
 
         if (!$taskCollectionRequestTransfer->getTasks()->count()) {
             return $this->errorResponseBuilder->createErrorResponseFromErrorMessage('Wrong request body.');
