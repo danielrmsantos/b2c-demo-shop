@@ -123,48 +123,59 @@ paths:
             description: Get Task Collection
             operationId: getTaskCollection
             parameters:
-                -   name: page[offset]
+                -   name: page
                     in: query
+                    description: 'Parameter is used to paginate items.'
+                    required: false
+                    style: deepObject
+                    explode: true
                     schema:
-                        type: string
-                        example: '0'
-                    description: Page offset
-                -   name: page[limit]
-                    in: query
-                    schema:
-                        type: string
-                        example: '1'
-                    description: Page limit
+                        type: object
+                        properties:
+                            offset:
+                                type: integer
+                                description: 'The number of items to skip before starting to collect the result set.'
+                            limit:
+                                type: integer
+                                description: 'The numbers of items to return.'
+                        example:
+                            offset: 1
+                            limit: 10
                 -   name: sort
                     in: query
                     schema:
                         type: string
                         example: '-title'
-                    description: Sort by Title descending
-                -   name: fields[task]
+                    description: 'Sort by field name.'
+                -   name: fields
                     in: query
+                    description: 'Parameter is used to extract specified items\` fields.'
+                    style: deepObject
+                    explode: true
                     schema:
-                        type: string
-                        example: title,dueDate
-                    description: Get Only Title and Due date fields
-                -   name: filter[task.title]
+                        type: object
+                        properties:
+                            resourceName:
+                                type: array
+                                items:
+                                    type: string
+                        example:
+                            task:
+                                - title
+                                - dueDate
+                -   name: filter
                     in: query
+                    description: 'Parameter is used to filter items by specified values.'
+                    required: false
+                    style: deepObject
+                    explode: true
                     schema:
-                        type: string
-                        example: Self
-                    description: Filter by Task Title
-                -   name: filter[task.description]
-                    in: query
-                    schema:
-                        type: string
-                        example: Officiis
-                    description: Filter by Task Title
-                -   name: filter[task.dueDate]
-                    in: query
-                    schema:
-                        type: string
-                        example: '2024-02-07'
-                    description: Filter by Task Due date
+                        type: object
+                        properties:
+                            task.title:
+                                type: string
+                            task.description:
+                                type: string
                 -   name: q
                     in: query
                     schema:

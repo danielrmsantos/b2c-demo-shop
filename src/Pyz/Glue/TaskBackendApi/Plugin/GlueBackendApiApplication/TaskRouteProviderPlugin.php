@@ -39,13 +39,13 @@ class TaskRouteProviderPlugin extends AbstractPlugin implements RouteProviderPlu
         $route = $this->buildRoute('getAction', Request::METHOD_GET, $this->getRoutePathWithId());
         $routeCollection = $this->addToRouteCollection($routeCollection, $route, $this->formatName('task', Request::METHOD_GET));
 
-        $route = $this->buildRoute('postAction', Request::METHOD_POST, self::ROUTE_PATH);
+        $route = $this->buildRoute('postAction', 'post', self::ROUTE_PATH);
         $routeCollection = $this->addToRouteCollection($routeCollection, $route, $this->formatName('task', Request::METHOD_POST));
 
-        $route = $this->buildRoute('patchAction', Request::METHOD_PATCH, $this->getRoutePathWithId());
+        $route = $this->buildRoute('patchAction', strtolower(Request::METHOD_PATCH), $this->getRoutePathWithId());
         $routeCollection = $this->addToRouteCollection($routeCollection, $route, $this->formatName('task', Request::METHOD_PATCH));
 
-        $route = $this->buildRoute('deleteAction', Request::METHOD_DELETE, $this->getRoutePathWithId());
+        $route = $this->buildRoute('deleteAction', strtolower(Request::METHOD_DELETE), $this->getRoutePathWithId());
         $routeCollection = $this->addToRouteCollection($routeCollection, $route, $this->formatName('task', Request::METHOD_DELETE));
 
         return $routeCollection;

@@ -30,14 +30,21 @@ class TaskBackendApiController extends AbstractController
      *                  "ref": "Page"
      *              },
      *              {
-     *                  "ref": "Sort"
+     *                  "ref": "Filter"
+     *              },
+     *              {
+     *                  "name": "sort",
+     *                  "in": "query",
+     *                  "description": "Sort by field name.",
+     *                  "example": "-title"
      *              },
      *              {
      *                  "name": "q",
      *                  "in": "query",
      *                  "description": "Search query string."
-     *               }
+     *              }
      *          ],
+     *          "responseAttributesClassName": "Generated\\Shared\\Transfer\\TaskBackendApiAttributesTransfer",
      *          "responses": {
      *              "400": "Bad Request",
      *              "403": "Unauthorized request"
@@ -60,11 +67,7 @@ class TaskBackendApiController extends AbstractController
      *          "summary": [
      *              "Retrieves task by id."
      *          ],
-     *          "parameters": [
-     *              {
-     *                  "ref": "ContentType"
-     *              }
-     *          ],
+     *          "responseAttributesClassName": "Generated\\Shared\\Transfer\\TaskBackendApiAttributesTransfer",
      *          "responses": {
      *              "400": "Bad Request",
      *              "403": "Unauthorized request",
@@ -84,15 +87,11 @@ class TaskBackendApiController extends AbstractController
 
     /**
      * @Glue({
-     *      "createResource": {
+     *      "post": {
      *           "summary": [
      *               "Creates a task."
      *           ],
-     *           "parameters": [
-     *               {
-     *                   "ref": "ContentType"
-     *               }
-     *           ],
+     *           "responseAttributesClassName": "Generated\\Shared\\Transfer\\TaskBackendApiAttributesTransfer",
      *           "responses": {
      *               "400": "Bad Request",
      *               "403": "Unauthorized request",
@@ -118,11 +117,7 @@ class TaskBackendApiController extends AbstractController
      *          "summary": [
      *              "Updates a task by ID."
      *          ],
-     *          "parameters": [
-     *              {
-     *                  "ref": "ContentType"
-     *              }
-     *          ],
+     *          "responseAttributesClassName": "Generated\\Shared\\Transfer\\TaskBackendApiAttributesTransfer",
      *          "responses": {
      *              "400": "Bad Request",
      *              "403": "Unauthorized request",
@@ -144,15 +139,11 @@ class TaskBackendApiController extends AbstractController
 
     /**
      * @Glue({
-     *     "deletes": {
+     *     "delete": {
      *          "summary": [
      *              "Deletes a task by ID."
      *          ],
-     *          "parameters": [
-     *              {
-     *                  "ref": "ContentType"
-     *              }
-     *          ],
+     *          "responseAttributesClassName": "Generated\\Shared\\Transfer\\TaskBackendApiAttributesTransfer",
      *          "responses": {
      *              "204": "No content",
      *              "403": "Unauthorized request"
